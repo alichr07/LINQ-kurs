@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace _1_Wprowadzenie
 {
@@ -10,6 +11,35 @@ namespace _1_Wprowadzenie
         {
             var sciezka = @"c:\windows";
             PokazDuzePlikiBezLinq(sciezka);
+
+            Console.WriteLine("************");
+            PokazDuzePlikiZLinq(sciezka);
+
+            Console.WriteLine("************");
+            PokazDuzePlikiZLinq2(sciezka);
+        }
+
+        private static void PokazDuzePlikiZLinq2(string sciezka)
+        {
+            var zapytanie = new DirectoryInfo(sciezka).GetFiles()
+                            .OrderByDescending(p => p.Length)
+                            .Take (5);
+            foreach (var plik in zapytanie)
+            {
+                Console.WriteLine($"{plik.Name,-20} : {plik.Length,20:N0}");
+            }
+        }
+
+        private static void PokazDuzePlikiZLinq(string sciezka)
+        {
+            var zapytanie = from plik in new DirectoryInfo(sciezka).GetFiles()
+                            orderby plik.Length descending
+                            select plik;
+
+            foreach (var plik in zapytanie.Take(5))
+            {
+                Console.WriteLine($"{plik.Name,-20} : {plik.Length,20:N0}");
+            }
         }
 
         private static void PokazDuzePlikiBezLinq(string sciezka)
