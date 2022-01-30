@@ -23,16 +23,15 @@ namespace _2_Funkcje
                 new Pracownik { Id = 7, Imie = "Marek", Nazwisko = "Uszak" },
             };
 
-            Console.WriteLine(programisci.Count());
-
-            Console.WriteLine(kierowcy.Count());
-
-            //IEnumerator<Pracownik> enumerator = programisci.GetEnumerator();
-
-            //while (enumerator.MoveNext())
-            //{
-            //    Console.WriteLine(enumerator.Current.Imie);
-            //}
+            foreach (var osoba in programisci.Where(p => p.Imie.StartsWith("M")))
+            {
+                Console.WriteLine(osoba.Imie);
+            }
         }
+
+        //private static bool RozpoczynaNaM(Pracownik pracownik)
+        //{
+        //    return pracownik.Imie.StartsWith("M");
+        //}
     }
 }
