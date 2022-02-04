@@ -11,6 +11,19 @@ namespace _3_Zapytania
         public string Tytul { get; set;}
         public string Gatunek { get; set; }
         public float Ocena { get; set; }
-        public int Rok { get; set; }
+
+        private int _rok;
+        public int Rok 
+        { 
+            get
+            {
+                Console.WriteLine($"Zwraca {_rok} i {Tytul}");
+                return _rok;
+            }
+            set
+            {
+                _rok = value;
+            }
+        }
     }
 }
