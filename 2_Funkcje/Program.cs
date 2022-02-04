@@ -19,7 +19,7 @@ namespace _2_Funkcje
 
             wypisz(potegowanie(dodawanie(2,1)));
             
-            IEnumerable<Pracownik> programisci = new Pracownik[]
+            var programisci = new Pracownik[]
             {
                 new Pracownik { Id = 1, Imie = "Marcin", Nazwisko = "Nowak" },
                 new Pracownik { Id = 2, Imie = "Tomek", Nazwisko = "Kowal" },
@@ -27,15 +27,17 @@ namespace _2_Funkcje
                 new Pracownik { Id = 4, Imie = "Adam", Nazwisko = "Wrona" },
             };
 
-            IEnumerable<Pracownik> kierowcy = new List<Pracownik>()
+            var kierowcy = new List<Pracownik>()
             {
                 new Pracownik { Id = 5, Imie = "Olek", Nazwisko = "Sroka" },
                 new Pracownik { Id = 6, Imie = "Piotr", Nazwisko = "Wróbel" },
                 new Pracownik { Id = 7, Imie = "Marek", Nazwisko = "Uszak" },
             };
 
-            foreach (var osoba in programisci.Where(p => p.Imie.Length == 5)
-                                             .OrderByDescending(p => p.Imie))
+            var zapytanie = programisci.Where(p => p.Imie.Length == 5)
+                                       .OrderByDescending(p => p.Imie);
+
+            foreach (var osoba in zapytanie)
             {
                 Console.WriteLine(osoba.Imie);
             }
