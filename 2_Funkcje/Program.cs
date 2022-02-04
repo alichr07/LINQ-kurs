@@ -35,9 +35,15 @@ namespace _2_Funkcje
             };
 
             var zapytanie = programisci.Where(p => p.Imie.Length == 5)
-                                       .OrderByDescending(p => p.Imie);
+                                       .OrderByDescending(p => p.Imie)
+                                       .Select(p => p);
 
-            foreach (var osoba in zapytanie)
+            var zapytanie2 = from programista in programisci
+                             where programista.Imie.Length == 5
+                             orderby programista.Imie descending
+                             select programista;
+
+            foreach (var osoba in zapytanie2)
             {
                 Console.WriteLine(osoba.Imie);
             }
