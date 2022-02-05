@@ -20,9 +20,8 @@ namespace _3_Zapytania
                 new Film { Tytul = "Gladiator", Gatunek = "Dramat", Ocena = 8.1f, Rok = 2000 }
             };
 
-            var zapytanie = filmy.Filtr(f => f.Rok > 2002).ToList();
-
-            Console.WriteLine(zapytanie.Count());
+            var zapytanie = filmy.Filtr(f => f.Rok > 2002)
+                                 .OrderByDescending(f => f.Ocena);
 
             var enumerator = zapytanie.GetEnumerator();
 
