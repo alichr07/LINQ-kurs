@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Samochody
 {
@@ -9,45 +10,28 @@ namespace Samochody
     {
         static void Main(string[] args)
         {
-            var samochody = WczytywanieSamochodu("paliwo.csv");
-            var producenci = WczytywanieProducenci("producent.csv");
+            TworzenieXML();
+        }
 
-            var zapytanie = from samochod in samochody
-                            group samochod by samochod.Producent into samochodGrupa
-                            select new
-                            {
-                                Nazwa = samochodGrupa.Key.ToUpper(),
-                                Max = samochodGrupa.Max(s => s.SpalanieAutostrada),
-                                Min = samochodGrupa.Min(s => s.SpalanieAutostrada),
-                                Sre = samochodGrupa.Average(s => s.SpalanieAutostrada)
-                            } into wynik
-                            orderby wynik.Max descending
-                            select wynik;
+        private static void TworzenieXML()
+        {
+            var rekordy = WczytywanieSamochodu("paliwo.csv");
 
-            var zapytanie2 = samochody.GroupBy(s => s.Producent)
-                                      .Select(g =>
-                                      {
-                                          return new
-                                          {
-                                              Nazwa = g.Key.ToUpper(),
-                                              Max = g.Max(s => s.SpalanieAutostrada),
-                                              Min = g.Min(s => s.SpalanieAutostrada),
-                                              Sre = g.Average(s => s.SpalanieAutostrada)
-                                          };
-                                      })
-                                      .OrderByDescending(g => g.Max);
+            var dokument = new XDocument();
+            var samochody = new XElement("Samochody", from rekord in rekordy
+                                                      select new XElement("Samochod",
+                                                                            new XAttribute("Rok", rekord.Rok),
+                                                                            new XAttribute("Producent", rekord.Producent),
+                                                                            new XAttribute("Model", rekord.Model),
+                                                                            new XAttribute("SpalanieAutostrada", rekord.SpalanieAutostrada),
+                                                                            new XAttribute("SpalanieMiasto", rekord.SpalanieMiasto),
+                                                                            new XAttribute("SpalanieMieszane", rekord.SpalanieMieszane)));
 
+            dokument.Add(samochody);
+            dokument.Save("paliwo.xml");
+        }
 
-            foreach (var wynik in zapytanie2)
-            {
-                Console.WriteLine($"{wynik.Nazwa}");
-                Console.WriteLine($"\t Max:{wynik.Max}");
-                Console.WriteLine($"\t Min:{wynik.Min}");
-                Console.WriteLine($"\t Sre:{wynik.Sre}");
-            }
-
-
-            static List<Samochod> WczytywanieSamochodu(string sciezka)
+        static List<Samochod> WczytywanieSamochodu(string sciezka)
             {
                 var zapytanie = File.ReadAllLines(sciezka)
                                     .Skip(1)
@@ -72,7 +56,7 @@ namespace Samochody
                                     });
                 return zapytanie.ToList();
             }
-        }
+        
         
     }
 }
