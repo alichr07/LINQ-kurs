@@ -42,8 +42,10 @@ namespace Samochody
                             orderby samochod.SpalanieAutostrada descending, samochod.Model ascending
                             select samochod;
 
-            var zapytanie2 = db.Samochody.Where(s => s.Model == "Audi")
-                                         .OrderByDescending(s => s.SpalanieAutostrada).ThenBy(s => s.Model).Take(10);
+            var zapytanie2 = db.Samochody.Where(s => s.Producent == "Audi")
+                                         .OrderByDescending(s => s.SpalanieAutostrada)
+                                         .ThenBy(s => s.Model)
+                                         .Take(10);
 
             foreach (var samochod in zapytanie2)
             {
